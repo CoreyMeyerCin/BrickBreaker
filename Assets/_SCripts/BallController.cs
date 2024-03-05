@@ -8,38 +8,46 @@ public class BallController : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D collider;
     private Vector2 direction;
-    private float timer = 0f;
+    private Vector2 previousPosition = new Vector2(0, 0);
+    private const float positionThreshold = 0.01f;
+
+
+    public float timer = 1f;
 
     void Start()
     {
         rb = gameObject.AddComponent<Rigidbody2D>();
         rb.gravityScale = 0;
         StartCoroutine(RespawnBall());
+        rb.bodyType = RigidbodyType2D.Dynamic;
         rb.velocity = direction * speed;
         rb.freezeRotation = true;
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
     }
     void Update()
-{
-    if (rb.velocity.magnitude == 0 || timer >= 1f)
     {
-        Vector2 randomDirection = Random.insideUnitCircle.normalized;
-        rb.velocity = randomDirection * speed;
-        timer = 0f; // Reset the timer
-    }
-    else if (rb.velocity.x == 0 || rb.velocity.y == 0)
-    {
-        timer += Time.deltaTime; // Increment the timer
-    }
-    else
-    {
-        timer = 0f; // Reset the timer
-    }
+        timer += Time.deltaTime;
+        if(timer >= 0.1f){
+            timer = 0f;
 
-    // Ensure the velocity's magnitude is always equal to the speed
-    rb.velocity = rb.velocity.normalized * speed;
-}
+            if (Vector2.Distance(gameObject.transform.position, previousPosition) < positionThreshold)
+            {
+                Debug.Log("gameObject.position: " + gameObject.transform.position);
+                Debug.Log("previousPosition: " + previousPosition);
+                Debug.Log("Distance: " + Vector2.Distance(rb.position, previousPosition));
+
+                Vector2 randomDirection = Random.insideUnitCircle.normalized;
+                rb.velocity = randomDirection * speed;
+            }
+            previousPosition = gameObject.transform.position;
+        } 
+
+        if (rb.velocity.magnitude != speed)
+        {
+            rb.velocity = rb.velocity.normalized * speed;
+        }
+    }
 
     void OnCollisionEnter2D(Collision2D collision)
     {

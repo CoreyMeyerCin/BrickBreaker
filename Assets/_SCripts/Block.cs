@@ -28,6 +28,7 @@ public class Block : MonoBehaviour
         hitsToBreak--;
         colorIndex--;
         Debug.Log("hitsToBreak: " + hitsToBreak);
+        StartCoroutine(Camera.main.GetComponent<CameraShake>().Shake(0.06f, 0.06f));
         if(hitsToBreak <= 0){
             Debug.Log("Destroying block");
             ScoreManager.Instance.Blocks--;
