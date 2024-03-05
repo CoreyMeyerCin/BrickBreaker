@@ -567,7 +567,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockPrefabs:
   - {fileID: 7134418434158860973, guid: 590f89b512b331f43b9300f2136feb27, type: 3}
-  - {fileID: 7134418434158860973, guid: 07fdd524b6bb37c4abc9ffad429bc865, type: 3}
   xSpawnRangeHigh: 7.7
   xSpawnRangeLow: -7.7
   ySpawnHigh: 4
@@ -654,7 +653,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 998662253}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.95, y: -3.84, z: 0}
+  m_LocalPosition: {x: -0.15, y: -1.04, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1137,7 +1136,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.3372549, g: 0.33333334, b: 0.32941177, a: 1}
+  m_Color: {r: 1, g: 0.087011196, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

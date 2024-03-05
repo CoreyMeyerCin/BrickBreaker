@@ -32,31 +32,32 @@ public class SpawnManager : MonoBehaviour
         InvokeRepeating("SpawnBlock", startDelay, spawnInterval);
     }
 
-          void SpawnBlock()
+    void SpawnBlock()
+    {
+        Vector3 spawnPos = new Vector3(Random.Range(xSpawnRangeHigh, xSpawnRangeLow), Random.Range(ySpawnHigh, ySpawnLow), zSpawn);
+        
+        int blockIndex = Random.Range(0, blockPrefabs.Length);
+        
+        GameObject newBlock = Instantiate(blockPrefabs[blockIndex], spawnPos, blockPrefabs[blockIndex].transform.rotation);
+        
+        Vector2 boxSize = new Vector2(newBlock.GetComponent<BoxCollider2D>().size.x, newBlock.GetComponent<BoxCollider2D>().size.y);
+        
+        Collider2D hitCollider = Physics2D.OverlapBox(spawnPos, boxSize, 0);
+        if (hitCollider != null && hitCollider.gameObject != newBlock)
         {
-            Vector3 spawnPos = new Vector3(Random.Range(xSpawnRangeHigh, xSpawnRangeLow), Random.Range(ySpawnHigh, ySpawnLow), zSpawn);
-            int blockIndex = Random.Range(0, blockPrefabs.Length);
-
-            GameObject newBlock = Instantiate(blockPrefabs[blockIndex], spawnPos, blockPrefabs[blockIndex].transform.rotation);
-
-            Vector2 boxSize = new Vector2(newBlock.GetComponent<BoxCollider2D>().size.x, newBlock.GetComponent<BoxCollider2D>().size.y);
-
-            Collider2D hitCollider = Physics2D.OverlapBox(spawnPos, boxSize, 0);
-            if (hitCollider != null && hitCollider.gameObject != newBlock)
-            {
-                //Debug.Log("Spawn Blocked");
-                //Destroy(newBlock);
-                //SpawnBlock();
-            }
+            //Debug.Log("Spawn Blocked");
+            //Destroy(newBlock);
+            //SpawnBlock();
         }
-        public void ReplaceBlock(int hitsToBreak, GameObject oldBlock)
-        {
-            Destroy(oldBlock);
-            SpawnBlockAtPosition(hitsToBreak, oldBlock.transform.position);
-        }
-        void SpawnBlockAtPosition(int hitsToBreak, Vector3 position)
-        {
-            int blockIndex = hitsToBreak;
-            Instantiate(blockPrefabs[blockIndex], position, blockPrefabs[blockIndex].transform.rotation);
-        }
+    }
+    public void ReplaceBlock(int hitsToBreak, GameObject oldBlock)
+    {
+        Destroy(oldBlock);
+        SpawnBlockAtPosition(hitsToBreak, oldBlock.transform.position);
+    }
+    void SpawnBlockAtPosition(int hitsToBreak, Vector3 position)
+    {
+        int blockIndex = hitsToBreak;
+        Instantiate(blockPrefabs[blockIndex], position, blockPrefabs[blockIndex].transform.rotation);
+    }
 }

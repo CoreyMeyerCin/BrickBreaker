@@ -10,26 +10,26 @@ public class Block : MonoBehaviour
     public List<Color> colors;
     public List<SpriteRenderer> spriteRenderers;
     public int colorIndex = 0;
-void Awake()
-{
-    hitsToBreak = Random.Range(1, 7);
-    colorIndex = hitsToBreak-1;
-    blockText.GetComponent<TextMesh>().text = hitsToBreak.ToString();
-    foreach(SpriteRenderer sr in spriteRenderers)
+    void Awake()
     {
-        Color opaqueColor = new Color(colors[colorIndex].r, colors[colorIndex].g, colors[colorIndex].b, 1f);
-        sr.color = opaqueColor;
+        hitsToBreak = Random.Range(1, 7);
+        colorIndex = hitsToBreak-1;
+        blockText.GetComponent<TextMesh>().text = hitsToBreak.ToString();
+        foreach(SpriteRenderer sr in spriteRenderers)
+        {
+            Color opaqueColor = new Color(colors[colorIndex].r, colors[colorIndex].g, colors[colorIndex].b, 1f);
+            sr.color = opaqueColor;
+        }
     }
-}
 
     public void HitBlock()
     {
         ScoreManager.Instance.AddPoints(points);
         hitsToBreak--;
         colorIndex--;
-        Debug.Log("hitsToBreak: " + hitsToBreak); // Add this line
+        Debug.Log("hitsToBreak: " + hitsToBreak);
         if(hitsToBreak <= 0){
-            Debug.Log("Destroying block"); // And this line
+            Debug.Log("Destroying block");
             Destroy(gameObject);
         }
         blockText.GetComponent<TextMesh>().text = hitsToBreak.ToString();
