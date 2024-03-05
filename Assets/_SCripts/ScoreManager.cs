@@ -7,8 +7,6 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
 
-    public event Action<int> OnPointsAdded = delegate { };
-
     private int score = 0;
     private Text scoreText;
 
@@ -24,33 +22,41 @@ public class ScoreManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        OnPointsAdded += UpdateScoreText;
     }
 
     void Start()
     {
         scoreText = FindObjectOfType<Text>();
-        scoreText.text = "Score: 0";
+        scoreText.text = "Score: 0 | KC: 0";
 	}
 
     private void OnEnable()
     {
-        EventManager.Instance.OnBlockDestroyed += OnBlockDestroyed;
+        Events.OnBlockDestroyed += BlockDestroyed;
+        Events.OnPointsAdded += UpdateScoreText;
     }
 
-	private void OnBlockDestroyed()
-    {
+	private void OnDisable()
+	{
+		Events.OnBlockDestroyed -= BlockDestroyed;
+		Events.OnPointsAdded -= UpdateScoreText;
+	}
 
+	private void BlockDestroyed(Block block)
+    {
+        killcount++;
+        AddPoints(block.points);
     }
 
     public void AddPoints(int points)
     {
         score += points;
-        scoreText.text = $"Score: {score}";
-        OnPointsAdded(score);
+        scoreText.text = $"Score: {score} | KC: {killcount}";
+        Events.OnPointsAdded(score);
     }
+
     private void UpdateScoreText(int score)
     {
-        scoreText.text = $"Score: {score}";
+        scoreText.text = $"Score: {score} | KC: {killcount}";
     }
 }

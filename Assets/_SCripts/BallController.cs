@@ -6,8 +6,9 @@ public class BallController : MonoBehaviour
 {
     public float speed = 5f;
     public int damage = 1;
-    public float increaseScaleByAmount = 0.01f;
-	public float decreaseScaleByAmount = 0.01f;
+    public int incrementPowerPerXKills = 1;
+    public float increaseScaleByAmount = 0.1f;
+	public float decreaseScaleByAmount = 0.05f;
 	private Vector2 size;
     private Rigidbody2D rb;
     private BoxCollider2D collider;
@@ -25,7 +26,17 @@ public class BallController : MonoBehaviour
         size = gameObject.transform.localScale;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+	private void OnEnable()
+	{
+		Events.OnBlockDestroyed += BlockDestroyed;
+	}
+
+	private void OnDisable()
+	{
+		Events.OnBlockDestroyed -= BlockDestroyed;
+	}
+
+	void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("solid"))
         {
@@ -57,7 +68,7 @@ public class BallController : MonoBehaviour
                         }
                         direction.y *= -1;
                         break;
-                    }
+                }
                 
                 rb.velocity = direction * speed;
             }
@@ -92,9 +103,32 @@ public class BallController : MonoBehaviour
         }
     }
 
+    public void BlockDestroyed(Block block)
+    {
+        var dmg = GetDamage();
+        if (damage != dmg)
+        {
+            damage = dmg;
+            AdjustSize(new Vector2(increaseScaleByAmount, 0)); //add increaseScaleByAmount instead of 0 to end the trolling lol
+		}
+    }
+
 	public void AdjustSize(Vector2 amountToAdjustVector)
 	{
 		size += amountToAdjustVector;
         gameObject.transform.localScale = size;
 	}
+
+    public int GetDamage()
+    {
+        int addedDamage = 0;
+        var killcount = ScoreManager.Instance.killcount;
+		if (killcount > 0)
+        {
+            addedDamage += Mathf.FloorToInt(killcount / incrementPowerPerXKills);
+        }
+
+        return damage + addedDamage;
+    }
+
 }
