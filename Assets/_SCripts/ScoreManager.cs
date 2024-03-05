@@ -29,15 +29,14 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
-        //TODO: ScoreText
         scoreText = FindObjectOfType<Text>();
         scoreText.text = "Score: 0";
 	}
 
-	private void OnEnable()
-	{
-        EventManager.Instance.OnBlockDestroyed += OnBlockDestroyed();
-	}
+    private void OnEnable()
+    {
+        EventManager.Instance.OnBlockDestroyed += OnBlockDestroyed;
+    }
 
 	private void OnBlockDestroyed()
     {

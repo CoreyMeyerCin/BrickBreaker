@@ -7,8 +7,13 @@ public class EventManager : MonoBehaviour
 {
 	public static EventManager Instance { get; private set; }
 
-	public event Action OnBlockDestroy;
+	public delegate void BlockDestroyedHandler();
+    public event BlockDestroyedHandler OnBlockDestroyed;
 
+    public void TriggerBlockDestroyed()
+    {
+        OnBlockDestroyed?.Invoke();
+    }
 	void Awake()
 	{
 		if (Instance == null)
