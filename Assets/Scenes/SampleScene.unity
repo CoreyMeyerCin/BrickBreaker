@@ -528,6 +528,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -601,6 +602,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58ac31a8059c01142acf2e580b6afddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &881257235
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,6 +660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockPrefabs:
   - {fileID: 7134418434158860973, guid: 590f89b512b331f43b9300f2136feb27, type: 3}
+  - {fileID: 7134418434158860973, guid: b1a46f015fd589d408144fa0c26feaa1, type: 3}
   xSpawnRangeHigh: 7.7
   xSpawnRangeLow: -7.7
   ySpawnHigh: 4
@@ -753,6 +767,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 7
+  timer: 1
 --- !u!58 &998662257
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1435,7 +1450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ScoreText: {fileID: 1773742023}
   BlockText: {fileID: 11897408}
-  Blocks: 0
+  CorruptedBlocks: 0
 --- !u!4 &1838157975
 Transform:
   m_ObjectHideFlags: 0

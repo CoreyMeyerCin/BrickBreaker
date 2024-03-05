@@ -14,7 +14,7 @@ public class ScoreManager : MonoBehaviour
     public static event LevelUpAction OnLevelUp;
 
     private int score = 0;
-    public int Blocks = 0;
+    public int CorruptedBlocks = 0;
 
 
     void OnEnable()
@@ -43,7 +43,7 @@ public class ScoreManager : MonoBehaviour
     void Start()
     {
         ScoreText.text = "Score: 0";
-        BlockText.text = "Blocks: 0";
+        BlockText.text = "Corruption: 0";
     }
 
     public void AddPoints(int points)
@@ -58,7 +58,7 @@ public class ScoreManager : MonoBehaviour
         public void UpdateScoreText()
     {
         ScoreText.text = $"Score: {score}";
-        BlockText.text = $"Blocks: {Blocks}";
+        BlockText.text = $"Corruption: {CorruptedBlocks}";
     }
 
     void LevelUp()
