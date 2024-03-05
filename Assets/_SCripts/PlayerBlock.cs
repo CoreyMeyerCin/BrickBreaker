@@ -10,7 +10,7 @@ public class PlayerBlock : Solid
         Rb = gameObject.AddComponent<Rigidbody2D>(); 
         Rb.gravityScale = 0;
         Rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionY;
-        this.edgeType = EdgeType.Vertical;
+        this.edgeType = EdgeType.Variable;
     }
 
     void Update()

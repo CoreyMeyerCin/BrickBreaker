@@ -42,24 +42,41 @@ void Start()
                         StartCoroutine(RespawnBall());
                         Debug.Log("Hit death tag");
                         break;
-                    // case EdgeType.Variable:
-                    //     Rigidbody2D collidedRb = collision.gameObject.GetComponent<Rigidbody2D>();
-                    //     if (collidedRb != null)
-                    //     {
-                    //         Vector2 collidedVelocity = collidedRb.velocity;
-                    //         rb.velocity += collidedVelocity;
-                    //     }
-                    //     return;
-                }
+                    case EdgeType.Variable:
+                        if(Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)){
+                            Debug.Log("A and D key are being pressed.");
+                        }
+                        else if(Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+                        {
+                            Debug.Log("A key is being pressed.");
+                            direction.x += speed * -0.1f;
+                        }
+                        else if (!Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+                        {
+                            Debug.Log("D key is being pressed.");
+                            direction.x += speed * 0.1f;
+                        }
+                        direction.y *= -1;
+                        Debug.Log("Hit player tag");
+                        break;
+                    }
                 
                 rb.velocity = direction * speed;
             }
 
-            Block block = collision.gameObject.transform.parent.GetComponent<Block>();
-            if (block != null)
+            
+            try
             {
-                Debug.Log("Hit Block:" + block.name.ToString());
-                block.HitBlock();
+                Block block = collision.gameObject.transform.parent.GetComponent<Block>();
+                if (block != null)
+                {
+                    Debug.Log("Hit Block:" + block.name.ToString());
+                    block.HitBlock();
+                }
+            }
+            catch (System.Exception e)
+            {
+                //Debug.Log("An error occurred: " + e.Message);
             }
         }
     }
