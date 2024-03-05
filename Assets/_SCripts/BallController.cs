@@ -8,16 +8,37 @@ public class BallController : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D collider;
     private Vector2 direction;
+    private float timer = 0f;
 
-void Start()
+    void Start()
+    {
+        rb = gameObject.AddComponent<Rigidbody2D>();
+        rb.gravityScale = 0;
+        StartCoroutine(RespawnBall());
+        rb.velocity = direction * speed;
+        rb.freezeRotation = true;
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+    }
+    void Update()
 {
-    rb = gameObject.AddComponent<Rigidbody2D>();
-    rb.gravityScale = 0;
-    StartCoroutine(RespawnBall());
-    rb.velocity = direction * speed;
-    rb.freezeRotation = true;
-    rb.interpolation = RigidbodyInterpolation2D.Interpolate;
-    rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+    if (rb.velocity.magnitude == 0 || timer >= 1f)
+    {
+        Vector2 randomDirection = Random.insideUnitCircle.normalized;
+        rb.velocity = randomDirection * speed;
+        timer = 0f; // Reset the timer
+    }
+    else if (rb.velocity.x == 0 || rb.velocity.y == 0)
+    {
+        timer += Time.deltaTime; // Increment the timer
+    }
+    else
+    {
+        timer = 0f; // Reset the timer
+    }
+
+    // Ensure the velocity's magnitude is always equal to the speed
+    rb.velocity = rb.velocity.normalized * speed;
 }
 
     void OnCollisionEnter2D(Collision2D collision)

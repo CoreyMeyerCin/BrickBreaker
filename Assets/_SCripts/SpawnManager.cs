@@ -34,6 +34,8 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnBlock()
     {
+        ScoreManager.Instance.Blocks++;
+        ScoreManager.Instance.UpdateScoreText();
         Vector3 spawnPos = new Vector3(Random.Range(xSpawnRangeHigh, xSpawnRangeLow), Random.Range(ySpawnHigh, ySpawnLow), zSpawn);
         
         int blockIndex = Random.Range(0, blockPrefabs.Length);

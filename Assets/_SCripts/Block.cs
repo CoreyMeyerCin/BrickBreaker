@@ -30,6 +30,8 @@ public class Block : MonoBehaviour
         Debug.Log("hitsToBreak: " + hitsToBreak);
         if(hitsToBreak <= 0){
             Debug.Log("Destroying block");
+            ScoreManager.Instance.Blocks--;
+            ScoreManager.Instance.UpdateScoreText();
             Destroy(gameObject);
         }
         blockText.GetComponent<TextMesh>().text = hitsToBreak.ToString();
