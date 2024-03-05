@@ -5,11 +5,27 @@ using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
+    public Text ScoreText;
+    public Text BlockText;
 
-    public event Action<int> OnPointsAdded = delegate { };
+    public event Action OnPointsAdded = delegate { };
+    
+    public delegate void LevelUpAction();
+    public static event LevelUpAction OnLevelUp;
 
     private int score = 0;
-    private Text scoreText;
+    public int Blocks = 0;
+
+
+    void OnEnable()
+    {
+        ScoreManager.OnLevelUp += LevelUp;
+    }
+
+    void OnDisable()
+    {
+        ScoreManager.OnLevelUp -= LevelUp;
+    }
 
     void Awake()
     {
@@ -26,19 +42,28 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
-        //TODO: ScoreText
-        scoreText = FindObjectOfType<Text>();
-        scoreText.text = "Score: 0";
+        ScoreText.text = "Score: 0";
+        BlockText.text = "Blocks: 0";
     }
 
     public void AddPoints(int points)
     {
         score += points;
-        scoreText.text = $"Score: {score}";
-        OnPointsAdded(score);
+        OnPointsAdded();
+        if (score >= 500)
+        {
+            OnLevelUp?.Invoke();
+        }
     }
-        private void UpdateScoreText(int score)
+        public void UpdateScoreText()
     {
-        scoreText.text = $"Score: {score}";
+        ScoreText.text = $"Score: {score}";
+        BlockText.text = $"Blocks: {Blocks}";
     }
+
+    void LevelUp()
+    {
+        Time.timeScale = 0f;
+    }
+    
 }
