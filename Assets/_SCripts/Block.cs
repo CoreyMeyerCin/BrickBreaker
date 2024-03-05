@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviour
 {
@@ -10,7 +12,8 @@ public class Block : MonoBehaviour
     public List<Color> colors;
     public List<SpriteRenderer> spriteRenderers;
     public int colorIndex = 0;
-    void Awake()
+
+	void Awake()
     {
         hitsToBreak = Random.Range(1, 7);
         colorIndex = hitsToBreak-1;
@@ -22,16 +25,24 @@ public class Block : MonoBehaviour
         }
     }
 
-    public void HitBlock()
+    public void HitBlock(int damage)
     {
         ScoreManager.Instance.AddPoints(points);
         hitsToBreak--;
         colorIndex--;
         Debug.Log("hitsToBreak: " + hitsToBreak);
-        if(hitsToBreak <= 0){
+        if(hitsToBreak <= 0)
+        {
             Debug.Log("Destroying block");
+            //OnBlockDestroy?.Invoke();
             Destroy(gameObject);
-        }
+            ScoreManager.Instance.killcount++;
+			if (ScoreManager.Instance.killcount % 5 == 0 && ScoreManager.Instance.killcount > 0)
+			{
+				//GetScr
+			}
+		}
+
         blockText.GetComponent<TextMesh>().text = hitsToBreak.ToString();
         foreach(SpriteRenderer sr in spriteRenderers)
         {

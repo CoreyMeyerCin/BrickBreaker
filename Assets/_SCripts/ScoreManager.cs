@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class ScoreManager : MonoBehaviour
 
     private int score = 0;
     private Text scoreText;
+
+    public int killcount = 0;
 
     void Awake()
     {
@@ -29,6 +32,16 @@ public class ScoreManager : MonoBehaviour
         //TODO: ScoreText
         scoreText = FindObjectOfType<Text>();
         scoreText.text = "Score: 0";
+	}
+
+	private void OnEnable()
+	{
+        EventManager.Instance.OnBlockDestroyed += OnBlockDestroyed();
+	}
+
+	private void OnBlockDestroyed()
+    {
+
     }
 
     public void AddPoints(int points)
@@ -37,7 +50,7 @@ public class ScoreManager : MonoBehaviour
         scoreText.text = $"Score: {score}";
         OnPointsAdded(score);
     }
-        private void UpdateScoreText(int score)
+    private void UpdateScoreText(int score)
     {
         scoreText.text = $"Score: {score}";
     }

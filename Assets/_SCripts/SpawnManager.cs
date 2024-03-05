@@ -55,6 +55,7 @@ public class SpawnManager : MonoBehaviour
         Destroy(oldBlock);
         SpawnBlockAtPosition(hitsToBreak, oldBlock.transform.position);
     }
+
     void SpawnBlockAtPosition(int hitsToBreak, Vector3 position)
     {
         int blockIndex = hitsToBreak;
