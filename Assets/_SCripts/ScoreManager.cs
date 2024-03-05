@@ -20,7 +20,8 @@ public class ScoreManager : MonoBehaviour
 
     void OnEnable()
     {
-        ScoreManager.OnLevelUp += LevelUp;
+        ScoreManager.OnLevelUp += LevelUp; 
+        EventManager.Instance.OnBlockDestroyed += OnBlockDestroyed;
     }
 
     void OnDisable()
@@ -45,15 +46,11 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
-        scoreText = FindObjectOfType<Text>();
-        scoreText.text = "Score: 0";
+        ScoreText = FindObjectOfType<Text>();
+        ScoreText.text = "Score: 0";
         BlockText.text = "Corruption: 0";
 	}
 
-    private void OnEnable()
-    {
-        EventManager.Instance.OnBlockDestroyed += OnBlockDestroyed;
-    }
 
 	private void OnBlockDestroyed()
     {
@@ -68,8 +65,9 @@ public class ScoreManager : MonoBehaviour
         {
             OnLevelUp?.Invoke();
         }
+    }
 
-        public void UpdateScoreText()
+    public void UpdateScoreText()
     {
         ScoreText.text = $"Score: {score}";
         BlockText.text = $"Corruption: {CorruptedBlocks}";
@@ -79,5 +77,6 @@ public class ScoreManager : MonoBehaviour
     {
         Time.timeScale = 0f;
     }
+    
     
 }
