@@ -6,9 +6,28 @@ using UnityEngine.UIElements;
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
+    public Text ScoreText;
+    public Text BlockText;
+
+    public event Action OnPointsAdded = delegate { };
+    
+    public delegate void LevelUpAction();
+    public static event LevelUpAction OnLevelUp;
 
     private int score = 0;
-    private Text scoreText;
+    public int CorruptedBlocks = 0;
+
+
+    void OnEnable()
+    {
+        ScoreManager.OnLevelUp += LevelUp; 
+        EventManager.Instance.OnBlockDestroyed += OnBlockDestroyed;
+    }
+
+    void OnDisable()
+    {
+        ScoreManager.OnLevelUp -= LevelUp;
+    }
 
     public int killcount = 0;
 
@@ -22,41 +41,42 @@ public class ScoreManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        OnPointsAdded += UpdateScoreText;
     }
 
     void Start()
     {
-        scoreText = FindObjectOfType<Text>();
-        scoreText.text = "Score: 0 | KC: 0";
+        ScoreText = FindObjectOfType<Text>();
+        ScoreText.text = "Score: 0";
+        BlockText.text = "Corruption: 0";
 	}
 
-    private void OnEnable()
-    {
-        Events.OnBlockDestroyed += BlockDestroyed;
-        Events.OnPointsAdded += UpdateScoreText;
-    }
 
-	private void OnDisable()
-	{
-		Events.OnBlockDestroyed -= BlockDestroyed;
-		Events.OnPointsAdded -= UpdateScoreText;
-	}
-
-	private void BlockDestroyed(Block block)
+	private void OnBlockDestroyed()
     {
-        killcount++;
-        AddPoints(block.points);
+
     }
 
     public void AddPoints(int points)
     {
         score += points;
-        scoreText.text = $"Score: {score} | KC: {killcount}";
-        Events.OnPointsAdded(score);
+        OnPointsAdded();
+        if (score >= 500)
+        {
+            OnLevelUp?.Invoke();
+        }
     }
 
-    private void UpdateScoreText(int score)
+    public void UpdateScoreText()
     {
-        scoreText.text = $"Score: {score} | KC: {killcount}";
+        ScoreText.text = $"Score: {score}";
+        BlockText.text = $"Corruption: {CorruptedBlocks}";
     }
+
+    void LevelUp()
+    {
+        Time.timeScale = 0f;
+    }
+    
+    
 }
