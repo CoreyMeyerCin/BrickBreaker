@@ -5,12 +5,15 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     public float speed = 5f;
+    public int damage = 1;
+    public float increaseScaleByAmount = 0.01f;
+	public float decreaseScaleByAmount = 0.01f;
+	private Vector2 size;
     private Rigidbody2D rb;
     private BoxCollider2D collider;
     private Vector2 direction;
     private Vector2 previousPosition = new Vector2(0, 0);
     private const float positionThreshold = 0.01f;
-
 
     public float timer = 1f;
 
@@ -24,6 +27,7 @@ public class BallController : MonoBehaviour
         rb.freezeRotation = true;
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        size = gameObject.transform.localScale;
     }
     void Update()
     {
@@ -91,14 +95,16 @@ public class BallController : MonoBehaviour
                 Block block = collision.gameObject.transform.parent.GetComponent<Block>();
                 if (block != null)
                 {
-                    block.HitBlock();
+                    block.HitBlock(damage);
+                    AdjustSize(new Vector2(increaseScaleByAmount, increaseScaleByAmount));
                 }
             }
             catch (System.Exception e)
             {
             }
-        }
-    }
+		}
+	}
+
     IEnumerator RespawnBall()
     {
         GameObject spawnPoint = GameObject.FindGameObjectWithTag("spawn");
@@ -113,4 +119,10 @@ public class BallController : MonoBehaviour
             rb.velocity = direction * speed; 
         }
     }
+
+	public void AdjustSize(Vector2 amountToAdjustVector)
+	{
+		size += amountToAdjustVector;
+        gameObject.transform.localScale = size;
+	}
 }

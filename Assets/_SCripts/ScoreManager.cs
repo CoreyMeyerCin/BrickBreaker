@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -19,13 +20,16 @@ public class ScoreManager : MonoBehaviour
 
     void OnEnable()
     {
-        ScoreManager.OnLevelUp += LevelUp;
+        ScoreManager.OnLevelUp += LevelUp; 
+        EventManager.Instance.OnBlockDestroyed += OnBlockDestroyed;
     }
 
     void OnDisable()
     {
         ScoreManager.OnLevelUp -= LevelUp;
     }
+
+    public int killcount = 0;
 
     void Awake()
     {
@@ -42,8 +46,15 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
+        ScoreText = FindObjectOfType<Text>();
         ScoreText.text = "Score: 0";
         BlockText.text = "Corruption: 0";
+	}
+
+
+	private void OnBlockDestroyed()
+    {
+
     }
 
     public void AddPoints(int points)
@@ -55,7 +66,8 @@ public class ScoreManager : MonoBehaviour
             OnLevelUp?.Invoke();
         }
     }
-        public void UpdateScoreText()
+
+    public void UpdateScoreText()
     {
         ScoreText.text = $"Score: {score}";
         BlockText.text = $"Corruption: {CorruptedBlocks}";
@@ -65,5 +77,6 @@ public class ScoreManager : MonoBehaviour
     {
         Time.timeScale = 0f;
     }
+    
     
 }

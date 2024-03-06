@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
     public enum BlockType{
         Normal,
@@ -17,6 +19,7 @@ public class Block : MonoBehaviour
     public List<Color> colors;
     public List<SpriteRenderer> spriteRenderers;
     public int colorIndex = 0;
+
     public BlockType blockType;
 
     void Awake()
@@ -43,7 +46,7 @@ public class Block : MonoBehaviour
         }
     }
 
-    public void HitBlock()
+    public void HitBlock(int damage)
     {
         if (hitTimer > 0)
         {
@@ -54,6 +57,7 @@ public class Block : MonoBehaviour
         hitsToBreak--;
         colorIndex--;
         Debug.Log("hitsToBreak: " + hitsToBreak);
+
         StartCoroutine(Camera.main.GetComponent<CameraShake>().Shake(0.06f, 0.06f));
         if(hitsToBreak <= 0){
             if(blockType == BlockType.Corrupted){
@@ -62,8 +66,15 @@ public class Block : MonoBehaviour
                 Debug.Log("Corrupted Block Count::" + ScoreManager.Instance.CorruptedBlocks);
             }
             ScoreManager.Instance.UpdateScoreText();
+            //OnBlockDestroy?.Invoke();
             Destroy(gameObject);
-        }
+            ScoreManager.Instance.killcount++;
+			if (ScoreManager.Instance.killcount % 5 == 0 && ScoreManager.Instance.killcount > 0)
+			{
+				//GetScr
+			}
+		}
+
         blockText.GetComponent<TextMesh>().text = hitsToBreak.ToString();
         foreach(SpriteRenderer sr in spriteRenderers)
         {

@@ -3,8 +3,11 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
      public PlayerBlock playerBlock;
-     void Start(){
-       playerBlock = FindObjectOfType<PlayerBlock>();
+     void Start()
+     {
+        //there should never be more than 1 of these, so this way of assignment is fine
+        playerBlock = FindObjectOfType<PlayerBlock>();
+
      }
 
     void Update()
