@@ -3,29 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventManager : MonoBehaviour
+public class Events
 {
-	public static EventManager Instance { get; private set; }
-
-	public delegate void BlockDestroyedHandler();
-    public event BlockDestroyedHandler OnBlockDestroyed;
-
-    public void TriggerBlockDestroyed()
-    {
-        OnBlockDestroyed?.Invoke();
-    }
-	void Awake()
-	{
-		if (Instance == null)
-		{
-			Instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-		else
-		{
-			Destroy(gameObject);
-		}
-	}
-
-
+    public static Action<Block> OnBlockDestroyed;
+    public static Action<int> OnPointsAdded;
+    public static Action OnLeveLUp;
 }

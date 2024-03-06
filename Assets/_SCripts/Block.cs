@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-    public enum BlockType{
-        Normal,
-        Corrupted
-    }
+public enum BlockType
+{
+    Normal,
+    Corrupted
+}
+
 public class Block : MonoBehaviour
 {
     
@@ -24,15 +26,17 @@ public class Block : MonoBehaviour
 
     void Awake()
     {
-        hitsToBreak = Random.Range(1, colors.Count+1);
-        colorIndex = hitsToBreak-1;
+        hitsToBreak = Random.Range(1, colors.Count + 1);
+        colorIndex = hitsToBreak - 1;
         blockText.GetComponent<TextMesh>().text = hitsToBreak.ToString();
-        foreach(SpriteRenderer sr in spriteRenderers)
+
+        foreach (SpriteRenderer sr in spriteRenderers)
         {
             Color opaqueColor = new Color(colors[colorIndex].r, colors[colorIndex].g, colors[colorIndex].b, 1f);
             sr.color = opaqueColor;
         }
-        if(blockType == BlockType.Corrupted){
+        if (blockType == BlockType.Corrupted)
+        {
             ScoreManager.Instance.CorruptedBlocks++;
             ScoreManager.Instance.UpdateScoreText();
         }
@@ -52,27 +56,26 @@ public class Block : MonoBehaviour
         {
             return;
         }
+
         hitTimer = hitCooldown;
         ScoreManager.Instance.AddPoints(points);
-        hitsToBreak--;
-        colorIndex--;
-        Debug.Log("hitsToBreak: " + hitsToBreak);
+
+		hitsToBreak -= damage;
+		colorIndex -= damage;
+		Debug.Log("hitsToBreak: " + hitsToBreak);
 
         StartCoroutine(Camera.main.GetComponent<CameraShake>().Shake(0.06f, 0.06f));
-        if(hitsToBreak <= 0){
-            if(blockType == BlockType.Corrupted){
+        if(hitsToBreak <= 0)
+        {
+            if(blockType == BlockType.Corrupted)
+            {
                 Debug.Log("Destroying block");
                 ScoreManager.Instance.CorruptedBlocks--;
                 Debug.Log("Corrupted Block Count::" + ScoreManager.Instance.CorruptedBlocks);
             }
-            ScoreManager.Instance.UpdateScoreText();
-            //OnBlockDestroy?.Invoke();
-            Destroy(gameObject);
-            ScoreManager.Instance.killcount++;
-			if (ScoreManager.Instance.killcount % 5 == 0 && ScoreManager.Instance.killcount > 0)
-			{
-				//GetScr
-			}
+
+			Events.OnBlockDestroyed(this);
+			Destroy(gameObject);
 		}
 
         blockText.GetComponent<TextMesh>().text = hitsToBreak.ToString();

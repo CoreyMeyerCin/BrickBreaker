@@ -10,4 +10,10 @@
         instead of adding them in the inspector. This way you can see
         the origin of the component in the script instead of hoping that it
         was added on Unity's side.
+
+    Events/Actions should be defined in EventManager
+        Calling an event: Events.MethodName();
+        Subscribe to event: in OnEnable -- Events.OnBlockDestroyed += BlockDestroyed;
+        use -= for unsub in OnDisable 
+        "BlocksDestroyed" is the name of the method that should be executed within the class that has subscribed to the event
 */
