@@ -5,10 +5,13 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     public float speed = 5f;
-    public int damage = 1;
-    public int incrementPowerPerXKills = 1;
-    public float increaseScaleByAmount = 0.1f;
+    public int damage = 0;
+    private int baseDamage = 1;
+    private int addedDamage = 0;
+    public int incrementPowerPerXKills; //this doesn't want to accept a default value set here? Always ends up as 1. Set it in start as a workaround
+    public float increaseScaleByAmount = 0.5f; //...and yet it accepts my defaults for this var. Maybe I'm just stupid
 	public float decreaseScaleByAmount = 0.05f;
+
 	private Vector2 size;
     private Rigidbody2D rb;
     private BoxCollider2D collider;
@@ -29,11 +32,24 @@ public class BallController : MonoBehaviour
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         size = gameObject.transform.localScale;
+
+        incrementPowerPerXKills = 5;
     }
+	private void OnEnable()
+	{
+		Events.OnBlockDestroyed += BlockDestroyed;
+	}
+
+	private void OnDisable()
+	{
+		Events.OnBlockDestroyed -= BlockDestroyed;
+	}
+
     void Update()
     {
         timer += Time.deltaTime;
-        if(timer >= 0.1f){
+        if(timer >= 0.1f)
+        {
             timer = 0f;
 
             if (Vector2.Distance(gameObject.transform.position, previousPosition) < positionThreshold)
@@ -54,15 +70,6 @@ public class BallController : MonoBehaviour
         }
     }
 
-	private void OnEnable()
-	{
-		Events.OnBlockDestroyed += BlockDestroyed;
-	}
-
-	private void OnDisable()
-	{
-		Events.OnBlockDestroyed -= BlockDestroyed;
-	}
 
 	void OnCollisionEnter2D(Collision2D collision)
     {
@@ -84,7 +91,8 @@ public class BallController : MonoBehaviour
                         StartCoroutine(RespawnBall());
                         break;
                     case EdgeType.Variable:
-                        if(Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)){
+                        if(Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D))
+                        {
                         }
                         else if(Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
                         {
@@ -107,7 +115,6 @@ public class BallController : MonoBehaviour
                 if (block != null)
                 {
                     block.HitBlock(damage);
-                    AdjustSize(new Vector2(increaseScaleByAmount, increaseScaleByAmount));
                 }
             }
             catch (System.Exception e)
@@ -133,30 +140,23 @@ public class BallController : MonoBehaviour
 
     public void BlockDestroyed(Block block)
     {
-        var dmg = GetDamage();
-        if (damage != dmg)
+        if (ScoreManager.Instance.killcount > 0 && ScoreManager.Instance.killcount % incrementPowerPerXKills == 0) 
         {
-            damage = dmg;
-            AdjustSize(new Vector2(increaseScaleByAmount, 0)); //add increaseScaleByAmount instead of 0 to end the trolling lol
-		}
+            UpdateDamage();
+            AdjustSize(new Vector2(increaseScaleByAmount, increaseScaleByAmount));
+        }
     }
 
-	public void AdjustSize(Vector2 amountToAdjustVector)
+	private void AdjustSize(Vector2 amountToAdjustVector)
 	{
 		size += amountToAdjustVector;
         gameObject.transform.localScale = size;
 	}
 
-    public int GetDamage()
+    private void UpdateDamage()
     {
-        int addedDamage = 0;
         var killcount = ScoreManager.Instance.killcount;
-		if (killcount > 0)
-        {
-            addedDamage += Mathf.FloorToInt(killcount / incrementPowerPerXKills);
-        }
-
-        return damage + addedDamage;
+        addedDamage = Mathf.FloorToInt(killcount / incrementPowerPerXKills);
+        damage = baseDamage + addedDamage;
     }
-
 }

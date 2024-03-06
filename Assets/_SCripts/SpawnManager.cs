@@ -34,7 +34,6 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnBlock()
     {
-
         Vector3 spawnPos = new Vector3(Random.Range(xSpawnRangeHigh, xSpawnRangeLow), Random.Range(ySpawnHigh, ySpawnLow), zSpawn);
         
         int blockIndex = Random.Range(0, blockPrefabs.Length);
@@ -52,6 +51,7 @@ public class SpawnManager : MonoBehaviour
             //SpawnBlock();
         }
     }
+
     public void ReplaceBlock(int hitsToBreak, GameObject oldBlock)
     {
         Destroy(oldBlock);
