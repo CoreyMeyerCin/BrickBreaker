@@ -8,4 +8,9 @@ public class Events
     public static Action<Block> OnBlockDestroyed;
     public static Action<int> OnPointsAdded;
     public static Action OnLeveLUp;
+
+    //effects
+    public static Action OnPaddleExpand;
+    public static Action OnPaddleDecrease;
+    public static Action OnTimeStop;
 }

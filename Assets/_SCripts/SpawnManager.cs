@@ -37,7 +37,7 @@ public class SpawnManager : MonoBehaviour
         Vector3 spawnPos = new Vector3(Random.Range(xSpawnRangeHigh, xSpawnRangeLow), Random.Range(ySpawnHigh, ySpawnLow), zSpawn);
         
         int blockIndex = Random.Range(0, blockPrefabs.Length);
-        Debug.Log("blockIndex: " + blockIndex);
+        //Debug.Log("blockIndex: " + blockIndex);
 
         GameObject newBlock = Instantiate(blockPrefabs[blockIndex], spawnPos, blockPrefabs[blockIndex].transform.rotation);
         

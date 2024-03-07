@@ -12,11 +12,11 @@ public enum BlockType
 
 public class Block : MonoBehaviour
 {
-    
-    private float hitTimer = 0f;
+	private float hitTimer = 0f;
     private float hitCooldown = 0.1f;
     public int hitsToBreak;
     public int points = 10;
+
     public GameObject blockText;
     public List<Color> colors;
     public List<SpriteRenderer> spriteRenderers;
@@ -62,16 +62,16 @@ public class Block : MonoBehaviour
 
 		hitsToBreak -= damage;
 		colorIndex -= damage;
-		Debug.Log("hitsToBreak: " + hitsToBreak);
+		//Debug.Log("hitsToBreak: " + hitsToBreak);
 
         StartCoroutine(Camera.main.GetComponent<CameraShake>().Shake(0.06f, 0.06f));
         if(hitsToBreak <= 0)
         {
             if(blockType == BlockType.Corrupted)
             {
-                Debug.Log("Destroying block");
+                //Debug.Log("Destroying block");
                 ScoreManager.Instance.CorruptedBlocks--;
-                Debug.Log("Corrupted Block Count::" + ScoreManager.Instance.CorruptedBlocks);
+                //Debug.Log("Corrupted Block Count::" + ScoreManager.Instance.CorruptedBlocks);
             }
 
 			Events.OnBlockDestroyed(this);
