@@ -8,6 +8,7 @@ TagManager:
   - spawn
   - death
   - time_stop_visual
+  - powerup_button
   layers:
   - Default
   - TransparentFX

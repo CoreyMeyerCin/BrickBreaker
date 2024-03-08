@@ -7,7 +7,6 @@ public class InputManager : MonoBehaviour
      {
         //there should never be more than 1 of these, so this way of assignment is fine
         playerBlock = FindObjectOfType<PlayerBlock>();
-
      }
 
     void Update()

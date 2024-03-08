@@ -14,8 +14,8 @@ public class BallController : MonoBehaviour
     private int baseDamage = 1;
     private int addedDamage = 0;
     public int incrementPowerPerXKills; //this doesn't want to accept a default value set here? Always ends up as 1. Set it in start as a workaround
-    public float increaseScaleByAmount = 0.5f; //...and yet it accepts my defaults for this var. Maybe I'm just stupid
-	public float decreaseScaleByAmount = 0.05f;
+    public float increaseScaleByAmount = 100f; //...and yet it accepts my defaults for this var. Maybe I'm just stupid
+	public float decreaseScaleByAmount = 0.5f;
 
 	private Vector2 size;
     private Rigidbody2D rb;
@@ -47,12 +47,22 @@ public class BallController : MonoBehaviour
 	private void OnEnable()
 	{
 		Events.OnBlockDestroyed += BlockDestroyed;
+
+        Events.OnPowerupPowerIncrease += PowerIncreased;
+        Events.OnPowerupBallSpeedIncrease += SpeedIncreased;
+        Events.OnPowerupBallSizeIncrease += SizeIncreased;
+
         Events.OnTimeStop += TimeStopWrapper;
 	}
 
 	private void OnDisable()
 	{
 		Events.OnBlockDestroyed -= BlockDestroyed;
+
+		Events.OnPowerupPowerIncrease -= PowerIncreased;
+		Events.OnPowerupBallSpeedIncrease -= SpeedIncreased;
+		Events.OnPowerupBallSizeIncrease -= SizeIncreased;
+
 		Events.OnTimeStop -= TimeStopWrapper;
 	}
 
@@ -162,7 +172,7 @@ public class BallController : MonoBehaviour
 
     public void BlockDestroyed(Block block)
     {
-        if (ScoreManager.Instance.killcount > 0 && ScoreManager.Instance.killcount % incrementPowerPerXKills == 0) 
+        if (ScoreManager.Instance.Killcount > 0 && ScoreManager.Instance.Killcount % incrementPowerPerXKills == 0) 
         {
             UpdateDamage();
             AdjustSize(new Vector2(increaseScaleByAmount, increaseScaleByAmount));
@@ -171,18 +181,37 @@ public class BallController : MonoBehaviour
 
 	private void AdjustSize(Vector2 amountToAdjustVector)
 	{
+		//size = Vector2.Scale(size, new Vector2(increaseScaleByAmount, increaseScaleByAmount)); //other modifications keep making the ball disappear, don't have time to debug atm
 		size += amountToAdjustVector;
         gameObject.transform.localScale = size;
 	}
 
     private void UpdateDamage()
     {
-        var killcount = ScoreManager.Instance.killcount;
+        var killcount = ScoreManager.Instance.Killcount;
         addedDamage = Mathf.FloorToInt(killcount / incrementPowerPerXKills);
         damage = baseDamage + addedDamage;
     }
 
-    private void TimeStopWrapper()
+    private void PowerIncreased()
+    {
+        baseDamage += 1;
+        UpdateDamage();
+    }
+
+    private void SpeedIncreased()
+    {
+        baseSpeed += 1;
+        speed += 1;
+    }
+
+    private void SizeIncreased()
+    {
+		AdjustSize(new Vector2(increaseScaleByAmount, increaseScaleByAmount));
+	}
+
+
+	private void TimeStopWrapper()
     {
         Debug.Log("Triggering Time Stop");
 		StartCoroutine(TimeStop());

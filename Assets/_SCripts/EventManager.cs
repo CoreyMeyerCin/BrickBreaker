@@ -10,7 +10,12 @@ public class Events
     public static Action OnLeveLUp;
 
     //effects
-    public static Action OnPaddleExpand;
-    public static Action OnPaddleDecrease;
+    public static Action OnPowerupPaddleExpand;
+    public static Action OnPowerupPowerIncrease;
+    public static Action OnPowerupBallSpeedIncrease;
+    public static Action OnPowerupBallSizeIncrease;
+
+
+	public static Action OnPaddleDecrease;
     public static Action OnTimeStop;
 }

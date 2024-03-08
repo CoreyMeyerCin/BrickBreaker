@@ -20,13 +20,13 @@ public class PlayerBlock : Solid
 
 	private void OnEnable()
 	{
-		Events.OnPaddleExpand += PaddleExpand;
+		Events.OnPowerupPaddleExpand += PaddleExpand;
         Events.OnPaddleDecrease += PaddleDecrease;
 	}
 
 	private void OnDisable()
 	{
-        Events.OnPaddleExpand -= PaddleExpand;
+        Events.OnPowerupPaddleExpand -= PaddleExpand;
 		Events.OnPaddleDecrease -= PaddleDecrease;
 	}
 
