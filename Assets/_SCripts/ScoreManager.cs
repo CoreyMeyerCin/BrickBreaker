@@ -14,6 +14,8 @@ public class ScoreManager : MonoBehaviour
 	public int Killcount = 0;
 	public int CorruptedBlocks = 0;
 
+    public int CurrentStage = 1;
+
 
 	private void OnEnable()
 	{

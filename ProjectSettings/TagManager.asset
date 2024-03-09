@@ -9,6 +9,7 @@ TagManager:
   - death
   - time_stop_visual
   - powerup_button
+  - enemy
   layers:
   - Default
   - TransparentFX
