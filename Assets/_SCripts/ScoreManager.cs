@@ -10,8 +10,11 @@ public class ScoreManager : MonoBehaviour
     public Text BlockText;
 
     private int Score = 0;
-	public int killcount = 0;
+    public int Level = 1;
+	public int Killcount = 0;
 	public int CorruptedBlocks = 0;
+
+    public int CurrentStage = 1;
 
 
 	private void OnEnable()
@@ -48,8 +51,13 @@ public class ScoreManager : MonoBehaviour
 
 	private void BlockDestroyed(Block block)
 	{
-		killcount++;
+		Killcount++;
 		AddPoints(block.points);
+
+        if (Killcount > 1 && Killcount % 5 == 0)
+        {
+            Events.OnLeveLUp();
+        }
 	}
 
 	public void AddPoints(int points)
@@ -60,6 +68,7 @@ public class ScoreManager : MonoBehaviour
         {
             Events.OnLeveLUp();
         }
+
     }
 
     public void UpdateScoreText()
@@ -68,11 +77,14 @@ public class ScoreManager : MonoBehaviour
         BlockText.text = $"Corruption: {CorruptedBlocks}";
     }
 
-    void LevelUp()
+    private void LevelUp()
     {
         Time.timeScale = 0f;
         Debug.Log("Level Up");
         UIManager.Instance.ShowSkillCanvas();
+        Level++;
+        MenuManager.Instance.LevelUp(); // why the HELL is this no longer catching the event in menu manager?? It's fired here in BlockDestroyed() and should be catching, but isn't so I added this manual call :s
+
     }
     
     
