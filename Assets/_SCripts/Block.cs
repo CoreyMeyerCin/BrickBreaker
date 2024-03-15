@@ -26,6 +26,11 @@ public class Block : MonoBehaviour
 
     void Awake()
     {
+        Debug.Log("blockText: " + blockText);
+        Debug.Log("colors: " + colors);
+        Debug.Log("spriteRenderers: " + spriteRenderers);
+        Debug.Log("ScoreManager.Instance: " + ScoreManager.Instance);
+
         hitsToBreak = Random.Range(1, colors.Count + 1);
         colorIndex = hitsToBreak - 1;
         blockText.GetComponent<TextMesh>().text = hitsToBreak.ToString();

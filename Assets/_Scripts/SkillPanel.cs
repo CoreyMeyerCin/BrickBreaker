@@ -27,6 +27,8 @@ public class SkillPanel : MonoBehaviour
         SkillManager.Instance.UpgradeSkill(_skill);
         Time.timeScale = 1f;
         UIManager.Instance.HideSkillCanvas();
+        BallController ballController = FindObjectOfType<BallController>();
+        MenuManager.Instance.CloseMenu(MenuManager.Instance.SelectPowerupPanel);
 
         ResetPanel();
     }

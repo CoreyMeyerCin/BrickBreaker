@@ -63,13 +63,14 @@ public class KeyValue
 public class ObservableKeyValue
 {
     public string Key { get; set; }
+    private string _value;
     public string Value 
     { 
-        get { return Value; } 
+        get { return _value; } 
         set 
         {
-            Value = value;
-            OnValueChanged?.Invoke(Value);
+            _value = value;
+            OnValueChanged?.Invoke(_value);
         } 
     }
 
