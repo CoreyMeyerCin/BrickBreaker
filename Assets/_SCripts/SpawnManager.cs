@@ -19,6 +19,7 @@ public class SpawnManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            transform.SetParent(null); // Detach the GameObject from its parent
             DontDestroyOnLoad(gameObject);
         }
         else

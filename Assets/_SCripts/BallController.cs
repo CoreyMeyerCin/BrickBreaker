@@ -14,19 +14,18 @@ public class BallController : MonoBehaviour
     private int baseDamage = 1;
     private int addedDamage = 0;
     public int incrementPowerPerXKills; //this doesn't want to accept a default value set here? Always ends up as 1. Set it in start as a workaround
-    public float increaseScaleByAmount = 100f; //...and yet it accepts my defaults for this var. Maybe I'm just stupid
-	public float decreaseScaleByAmount = 0.5f;
-
 	private Vector2 size;
     private Rigidbody2D rb;
     private BoxCollider2D collider;
-    private Vector2 direction;
     private Vector2 previousPosition = new Vector2(0, 0);
     private const float positionThreshold = 0.01f;
+    public SoundTrigger SoundTrigger;
 
     public float lastHitTimer = 1f;
     private float ballActiveTimer = 1f;
     private bool isTimeStop = false;
+    private Vector2 direction;
+    public float increaseScaleByAmount = 0.1f;
 
     void Start()
     {
@@ -42,6 +41,7 @@ public class BallController : MonoBehaviour
 
         speed = baseSpeed;
         incrementPowerPerXKills = 5;
+        SoundTrigger = gameObject.GetComponent<SoundTrigger>();
     }
 
 	private void OnEnable()
@@ -95,7 +95,9 @@ public class BallController : MonoBehaviour
 
             if (ballActiveTimer > 6)
             {
-                Events.OnTimeStop(); //########################### COMMENT OUT TO TURN OFF TIME STOP TESTING SPAM - I only left it in so you can get jumpscared by it 
+                //Events.OnTimeStop(); //########################### COMMENT OUT TO TURN OFF TIME STOP TESTING SPAM - I only left it in so you can get jumpscared by it 
+                //lmao, I was so confused by what was going on XD
+                
                 ballActiveTimer = 0f;
             }
         }
@@ -145,6 +147,7 @@ public class BallController : MonoBehaviour
                 Block block = collision.gameObject.transform.parent.GetComponent<Block>();
                 if (block != null)
                 {
+                    SoundTrigger.PlaySound();
                     block.HitBlock(damage);
                 }
             }
@@ -219,31 +222,38 @@ public class BallController : MonoBehaviour
 
     private IEnumerator TimeStop()
     {
-		isTimeStop = true;
-		rb.velocity = Vector2.zero;
+        isTimeStop = true;
+        rb.velocity = Vector2.zero;
         rb.angularVelocity = 0;
         rb.Sleep();
 
         var img = GameObject.FindGameObjectWithTag("time_stop_visual")?.GetComponent<RawImage>();
-        img.enabled = true;
-		img.color = new Color(1, 1, 1, 1);
-		yield return StartCoroutine(FadeImage(img));
-		img.enabled = false;
+        if (img != null)
+        {
+            img.enabled = true;
+            img.color = new Color(1, 1, 1, 1);
+            yield return StartCoroutine(FadeImage(img));
+            img.enabled = false;
+            Debug.LogError("Time Stopping");
+        }
+        else
+        {
+            Debug.LogError("No GameObject with the tag 'time_stop_visual' and a RawImage component was found.");
+        }
 
-		for (float i = 1; i >= 0; i -= Time.deltaTime)
-		{
-            //chill a sec after fade ends
-		}
+        for (float i = 1; i >= 0; i -= Time.deltaTime)
+        {
+            yield return null; // Wait for the next frame
+        }
 
         rb.WakeUp();
-		Vector2 randomDirection = Random.insideUnitCircle.normalized;
-		//StartCoroutine(SpeedBoostAndDecay(2)); //this REEEEEALLY doesn't work right now so it's commented out lmao, uncomment for fun
+        Vector2 randomDirection = Random.insideUnitCircle.normalized;
 
-		speed = baseSpeed * 2;
-		rb.velocity = randomDirection * baseSpeed;
+        speed = baseSpeed * 2;
+        rb.velocity = randomDirection * baseSpeed;
         
-		isTimeStop = false;
-	}
+        isTimeStop = false;
+    }
 
     private IEnumerator FadeImage(RawImage image)
     {
@@ -254,6 +264,34 @@ public class BallController : MonoBehaviour
             image.color = new Color(1, 1, 1, i);
             yield return null;
         }
+    }
+    public IEnumerator TimeStart()
+    {
+        isTimeStop = false;
+
+        var img = GameObject.FindGameObjectWithTag("time_stop_visual")?.GetComponent<RawImage>();
+        if (img != null)
+        {
+            img.enabled = true;
+            // loop over 1.5 second forward
+            for (float i = 0; i <= 1; i += Time.deltaTime)
+            {
+                // set color with i as alpha
+                img.color = new Color(1, 1, 1, i);
+                yield return null;
+            }
+            img.enabled = false;
+        }
+        else
+        {
+            Debug.LogError("No GameObject with the tag 'time_stop_visual' and a RawImage component was found.");
+        }
+
+        rb.WakeUp();
+        Vector2 randomDirection = Random.insideUnitCircle.normalized;
+
+        speed = baseSpeed;
+        rb.velocity = randomDirection * baseSpeed;
     }
 
     private IEnumerator SpeedBoostAndDecay(float boostAmount)
