@@ -42,7 +42,6 @@ public class ScoreManager : MonoBehaviour
 
     void Start()
     {
-        ScoreText = FindObjectOfType<Text>();
 		ScoreText.text = "Score: 0";
 		BlockText.text = "Corruption: 0";
 	}
@@ -57,7 +56,7 @@ public class ScoreManager : MonoBehaviour
     {
         Score += points;
         UpdateScoreText();
-        if (Score >= 500)
+        if (Score >= 100)
         {
             Events.OnLeveLUp();
         }
@@ -72,6 +71,8 @@ public class ScoreManager : MonoBehaviour
     void LevelUp()
     {
         Time.timeScale = 0f;
+        Debug.Log("Level Up");
+        UIManager.Instance.ShowSkillCanvas();
     }
     
     

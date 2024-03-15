@@ -11,15 +11,14 @@ public class BallController : MonoBehaviour
     public int incrementPowerPerXKills; //this doesn't want to accept a default value set here? Always ends up as 1. Set it in start as a workaround
     public float increaseScaleByAmount = 0.5f; //...and yet it accepts my defaults for this var. Maybe I'm just stupid
 	public float decreaseScaleByAmount = 0.05f;
-
 	private Vector2 size;
     private Rigidbody2D rb;
     private BoxCollider2D collider;
     private Vector2 direction;
     private Vector2 previousPosition = new Vector2(0, 0);
     private const float positionThreshold = 0.01f;
-
     public float timer = 1f;
+    public SoundTrigger SoundTrigger;
 
     void Start()
     {
@@ -32,8 +31,8 @@ public class BallController : MonoBehaviour
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         size = gameObject.transform.localScale;
-
         incrementPowerPerXKills = 5;
+        SoundTrigger = gameObject.GetComponent<SoundTrigger>();
     }
 	private void OnEnable()
 	{
@@ -114,6 +113,7 @@ public class BallController : MonoBehaviour
                 Block block = collision.gameObject.transform.parent.GetComponent<Block>();
                 if (block != null)
                 {
+                    SoundTrigger.PlaySound();
                     block.HitBlock(damage);
                 }
             }
