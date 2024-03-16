@@ -78,9 +78,9 @@ public class BallController : MonoBehaviour
 
                 if (Vector2.Distance(gameObject.transform.position, previousPosition) < positionThreshold)
                 {
-                    Debug.Log("gameObject.position: " + gameObject.transform.position);
-                    Debug.Log("previousPosition: " + previousPosition);
-                    Debug.Log("Distance: " + Vector2.Distance(rb.position, previousPosition));
+                    // //Debug.Log("gameObject.position: " + gameObject.transform.position);
+                    // //Debug.Log("previousPosition: " + previousPosition);
+                    // //Debug.Log("Distance: " + Vector2.Distance(rb.position, previousPosition));
 
                     Vector2 randomDirection = Random.insideUnitCircle.normalized;
                     rb.velocity = randomDirection * speed;
@@ -216,7 +216,7 @@ public class BallController : MonoBehaviour
 
 	private void TimeStopWrapper()
     {
-        Debug.Log("Triggering Time Stop");
+        //Debug.Log("Triggering Time Stop");
 		StartCoroutine(TimeStop());
 	}
 
@@ -234,11 +234,11 @@ public class BallController : MonoBehaviour
             img.color = new Color(1, 1, 1, 1);
             yield return StartCoroutine(FadeImage(img));
             img.enabled = false;
-            Debug.LogError("Time Stopping");
+            //Debug.LogError("Time Stopping");
         }
         else
         {
-            Debug.LogError("No GameObject with the tag 'time_stop_visual' and a RawImage component was found.");
+            //Debug.LogError("No GameObject with the tag 'time_stop_visual' and a RawImage component was found.");
         }
 
         for (float i = 1; i >= 0; i -= Time.deltaTime)
@@ -284,7 +284,7 @@ public class BallController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No GameObject with the tag 'time_stop_visual' and a RawImage component was found.");
+            //Debug.LogError("No GameObject with the tag 'time_stop_visual' and a RawImage component was found.");
         }
 
         rb.WakeUp();

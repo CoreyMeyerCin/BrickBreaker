@@ -49,7 +49,7 @@ public class LevelManager : Manager<LevelManager>
 
 	public TreeNode GenerateStageTree()
 	{
-		Debug.Log($"Generating stage tree of depth {StageTreeGenerationDepth}...");
+		//Debug.Log($"Generating stage tree of depth {StageTreeGenerationDepth}...");
 		if (StageTreeGenerationDepth == 0)
 			return new TreeNode(GetRandomObjectForRootNode());
 
@@ -84,7 +84,7 @@ public class LevelManager : Manager<LevelManager>
 			}
 		}
 
-		Debug.Log("Stage tree generated successfully");
+		//Debug.Log("Stage tree generated successfully");
 		return root;
 	}
 

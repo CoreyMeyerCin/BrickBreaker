@@ -21,7 +21,7 @@ public class SpawnManager : Manager<SpawnManager>
         Vector3 spawnPos = new Vector3(Random.Range(xSpawnRangeHigh, xSpawnRangeLow), Random.Range(ySpawnHigh, ySpawnLow), zSpawn);
         
         int blockIndex = Random.Range(0, blockPrefabs.Length);
-        //Debug.Log("blockIndex: " + blockIndex);
+        ////Debug.Log("blockIndex: " + blockIndex);
 
         GameObject newBlock = Instantiate(blockPrefabs[blockIndex], spawnPos, blockPrefabs[blockIndex].transform.rotation);
         
@@ -30,7 +30,7 @@ public class SpawnManager : Manager<SpawnManager>
         Collider2D hitCollider = Physics2D.OverlapBox(spawnPos, boxSize, 0);
         if (hitCollider != null && hitCollider.gameObject != newBlock)
         {
-            //Debug.Log("Spawn Blocked");
+            ////Debug.Log("Spawn Blocked");
             //Destroy(newBlock);
             //SpawnBlock();
         }

@@ -39,7 +39,7 @@ public class MenuManager : Manager<MenuManager>
 
 	public void LevelUp()
 	{
-		Debug.Log("Leveling up");
+		//Debug.Log("Leveling up");
 		Time.timeScale = 0f;
 		OpenMenu(SelectPowerupPanel);
 
@@ -70,7 +70,7 @@ public class MenuManager : Manager<MenuManager>
     		}
     		else
     		{
-    		    Debug.LogError("No GameObject with the tag 'select_powerup_panel' was found.");
+    		    //Debug.LogError("No GameObject with the tag 'select_powerup_panel' was found.");
     		}
 		}
 	}
