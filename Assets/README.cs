@@ -21,4 +21,6 @@
         1) add action to EventManager, then subscribe to event and add the executing method into the file wherever it should happen
         2) add a UI TMP button under SelectPowerupPanel -> Main Panel. Tag the button with "powerup_button".
         3) add on-click event in button inspector and drag SelectPowerupPanel into it, then select the method from MenuManager.
+
+    To FindObject the Object MUST be active. If you want to load in inactive objects, use Resources.Load<GameObject>("path/to/prefab") or AssetDatabase.LoadAssetAtPath<GameObject>("path/to/prefab")
 */

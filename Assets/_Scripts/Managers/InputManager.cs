@@ -1,6 +1,5 @@
 using UnityEngine;
-
-public class InputManager : MonoBehaviour
+public class InputManager : Manager<InputManager>
 {
      public PlayerBlock playerBlock;
      void Start()
@@ -9,7 +8,7 @@ public class InputManager : MonoBehaviour
         playerBlock = FindObjectOfType<PlayerBlock>();
      }
 
-    void Update()
+    protected virtual void Update()
     {
         if (Input.GetKeyDown(KeyCode.O))
         {

@@ -1,22 +1,14 @@
 using UnityEngine;
-using System;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
-
-public class ScoreManager : MonoBehaviour
+public class ScoreManager : Manager<ScoreManager>
 {
-    public static ScoreManager Instance { get; private set; }
     public Text ScoreText;
     public Text BlockText;
-
     private int Score = 0;
     public int Level = 1;
 	public int Killcount = 0;
 	public int CorruptedBlocks = 0;
-
     public int CurrentStage = 1;
-
-
 	private void OnEnable()
 	{
 		Events.OnBlockDestroyed += BlockDestroyed;
@@ -28,20 +20,6 @@ public class ScoreManager : MonoBehaviour
 		Events.OnBlockDestroyed -= BlockDestroyed;
 		Events.OnLeveLUp -= LevelUp;
 	}
-
-
-
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     void Start()
     {
@@ -68,7 +46,6 @@ public class ScoreManager : MonoBehaviour
         {
             Events.OnLeveLUp();
         }
-
     }
 
     public void UpdateScoreText()
@@ -83,9 +60,6 @@ public class ScoreManager : MonoBehaviour
         Debug.Log("Level Up");
         UIManager.Instance.ShowSkillCanvas();
         Level++;
-        MenuManager.Instance.LevelUp(); // why the HELL is this no longer catching the event in menu manager?? It's fired here in BlockDestroyed() and should be catching, but isn't so I added this manual call :s
-
+        MenuManager.Instance.LevelUp();
     }
-    
-    
 }

@@ -1,26 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class SkillManager : MonoBehaviour
+public class SkillManager : Manager<SkillManager>
 {
-    public static SkillManager Instance { get; private set; }
     public List<Skill> Skills = new List<Skill>();
     public List<ObservableKeyValue> SkillLevels = new List<ObservableKeyValue>();
-
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
     void Start()
     {
         foreach(Skill skill in Skills)

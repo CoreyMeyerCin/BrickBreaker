@@ -7,9 +7,10 @@ TagManager:
   - solid
   - spawn
   - death
-  - time_stop_visual
   - powerup_button
+  - time_stop_visual
   - enemy
+  - select_powerup_panel
   layers:
   - Default
   - TransparentFX
