@@ -26,10 +26,10 @@ public class Block : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("blockText: " + blockText);
-        Debug.Log("colors: " + colors);
-        Debug.Log("spriteRenderers: " + spriteRenderers);
-        Debug.Log("ScoreManager.Instance: " + ScoreManager.Instance);
+        //Debug.Log("blockText: " + blockText);
+        //Debug.Log("colors: " + colors);
+        //Debug.Log("spriteRenderers: " + spriteRenderers);
+        //Debug.Log("ScoreManager.Instance: " + ScoreManager.Instance);
 
         hitsToBreak = Random.Range(1, colors.Count + 1);
         colorIndex = hitsToBreak - 1;
@@ -67,16 +67,16 @@ public class Block : MonoBehaviour
 
 		hitsToBreak -= damage;
 		colorIndex -= damage;
-		//Debug.Log("hitsToBreak: " + hitsToBreak);
+		//////Debug.Log("hitsToBreak: " + hitsToBreak);
 
         StartCoroutine(Camera.main.GetComponent<CameraShake>().Shake(0.06f, 0.06f));
         if(hitsToBreak <= 0)
         {
             if(blockType == BlockType.Corrupted)
             {
-                //Debug.Log("Destroying block");
+                //////Debug.Log("Destroying block");
                 ScoreManager.Instance.CorruptedBlocks--;
-                //Debug.Log("Corrupted Block Count::" + ScoreManager.Instance.CorruptedBlocks);
+                //////Debug.Log("Corrupted Block Count::" + ScoreManager.Instance.CorruptedBlocks);
             }
 
 			Events.OnBlockDestroyed(this);
