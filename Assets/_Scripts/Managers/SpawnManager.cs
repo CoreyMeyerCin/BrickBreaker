@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnManager : MonoBehaviour
+public class SpawnManager : Manager<SpawnManager>
 {
-    public static SpawnManager Instance { get; private set; }
     public GameObject[] blockPrefabs;
     public float xSpawnRangeHigh = 7.7f;
     public float xSpawnRangeLow = -7.7f;
@@ -13,20 +10,6 @@ public class SpawnManager : MonoBehaviour
     public float zSpawn = 0f;
     public float startDelay = 0f;
     public float spawnInterval = 1.5f;
-
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            transform.SetParent(null); // Detach the GameObject from its parent
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     void Start()
     {

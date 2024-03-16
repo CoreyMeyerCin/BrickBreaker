@@ -1,28 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : Manager<LevelManager>
 {
-	public static LevelManager Instance { get; private set; }
 	public TreeNode StageTree;
 	public TreeNode CurrentStage;
 	[SerializeField] public int StageTreeGenerationDepth = 5;
 	[SerializeField] public List<GameObject> AvailableObjectsForStageTreeGeneration = new List<GameObject>();
-
-
-	void Awake()
-	{
-		if (Instance == null)
-		{
-			Instance = this;
-		}
-		else
-		{
-			Destroy(gameObject);
-		}
-	}
 
 	private void OnEnable()
 	{
@@ -34,7 +18,6 @@ public class LevelManager : MonoBehaviour
 		Events.OnStageComplete -= StageComplete;
 	}
 
-	// Start is called before the first frame update
 	void Start()
     {
 		var enemies = GameObject.FindGameObjectsWithTag("enemy");
@@ -44,12 +27,6 @@ public class LevelManager : MonoBehaviour
 
 		CurrentStage = StageTree;
 	}
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
 	private void StageComplete()
 	{

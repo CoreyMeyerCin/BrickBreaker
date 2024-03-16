@@ -1,32 +1,14 @@
-using Newtonsoft.Json.Bson;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class MenuManager : MonoBehaviour
+public class MenuManager : Manager<MenuManager>
 {
-	public static MenuManager Instance { get; private set; }
-
 	public GameObject SelectPowerupPanel;
     public GameObject SelectPowerupMainPanel;
 	private List<GameObject> SelectPowerupButtons;
 
 	private readonly int NumberOfAvailablePowerups = 2;
-
-	void Awake()
-	{
-		if (Instance == null)
-		{
-			Instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-		else
-		{
-			Destroy(gameObject);
-		}
-	}
 
 	private void OnEnable()
 	{
@@ -38,18 +20,12 @@ public class MenuManager : MonoBehaviour
 		Events.OnLeveLUp -= LevelUp;
 	}
 
-	// Start is called before the first frame update
 	void Start()
     {
 		SelectPowerupButtons = GameObject.FindGameObjectsWithTag("powerup_button")?.ToList();
-		SelectPowerupPanel.SetActive(false);
+		SelectPowerupPanel = GameObject.Find("SelectPowerupPanel");
+    	SelectPowerupPanel.SetActive(false);
 	}
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void OpenMenu(GameObject menu)
     {
@@ -88,6 +64,14 @@ public class MenuManager : MonoBehaviour
 				SelectPowerupButtons[idx].SetActive(false);
 
 			}
+			if (SelectPowerupPanel != null)
+    		{
+    		    SelectPowerupPanel.SetActive(true);
+    		}
+    		else
+    		{
+    		    Debug.LogError("No GameObject with the tag 'select_powerup_panel' was found.");
+    		}
 		}
 	}
 
